@@ -83,9 +83,9 @@ public final class VortexPlusHudModule extends Module {
             if (sessionStarted == 0L) sessionStarted = System.currentTimeMillis();
             updateServerKey(client);
             if (client.getNetworkHandler() != null && client.getNetworkHandler().getPlayerList().stream()
-                    .anyMatch(entry -> entry.getProfile() != null && entry.getProfile().getId().equals(client.player.getUuid()))) {
+                    .anyMatch(entry -> entry.getProfile() != null && entry.getProfile().id().equals(client.player.getUuid()))) {
                 var own = client.getNetworkHandler().getPlayerList().stream()
-                        .filter(entry -> entry.getProfile() != null && entry.getProfile().getId().equals(client.player.getUuid()))
+                        .filter(entry -> entry.getProfile() != null && entry.getProfile().id().equals(client.player.getUuid()))
                         .findFirst().orElse(null);
                 if (own != null) ping = own.getLatency();
             }
@@ -194,11 +194,11 @@ public final class VortexPlusHudModule extends Module {
         int cy = client.getWindow().getScaledHeight() / 2;
         int gap = client.player.isSprinting() ? 6 : 4;
         if (client.player.getAttackCooldownProgress(0.0F) < 1.0F) gap += 3;
-        int color = color.get();
-        context.drawHorizontalLine(cx - gap - 3, cx - gap, cy, color);
-        context.drawHorizontalLine(cx + gap, cx + gap + 3, cy, color);
-        context.drawVerticalLine(cx, cy - gap - 3, cy - gap, color);
-        context.drawVerticalLine(cx, cy + gap, cy + gap + 3, color);
+            int hudColor = this.color.get();
+            context.drawHorizontalLine(cx - gap - 3, cx - gap, cy, hudColor);
+            context.drawHorizontalLine(cx + gap, cx + gap + 3, cy, hudColor);
+            context.drawVerticalLine(cx, cy - gap - 3, cy - gap, hudColor);
+            context.drawVerticalLine(cx, cy + gap, cy + gap + 3, hudColor);
     }
 
     private void recordHighlight(String event) {
