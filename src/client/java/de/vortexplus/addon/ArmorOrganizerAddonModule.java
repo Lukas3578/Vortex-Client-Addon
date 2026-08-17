@@ -15,7 +15,7 @@ public final class ArmorOrganizerAddonModule extends Module {
     private int cooldown;
 
     public ArmorOrganizerAddonModule() {
-        super("Armor Organizer", Category.CHEATS);
+        super("Vortex + | Armor Organizer", Category.HUD);
         addSetting(onlyEmptySlots);
         ClientTickEvents.END_CLIENT_TICK.register(this::onTick);
     }
@@ -25,14 +25,16 @@ public final class ArmorOrganizerAddonModule extends Module {
 
     private void onTick(MinecraftClient client) {
         try {
-            if (!isEnabled() || client.player == null || client.interactionManager == null
-                    || !(client.currentScreen instanceof InventoryScreen)) return;
+            if (!isEnabled() || client.player == null || client.interactionManager == null) return;
+            // The player inventory screen handler remains valid while in-game.
+            // This lets the module equip armor without opening a GUI.
+            if (client.currentScreen != null && !(client.currentScreen instanceof InventoryScreen)) return;
             if (cooldown-- > 0) return;
             ClientPlayerEntity player = client.player;
             for (int armorType = 0; armorType < 4; armorType++) {
                 int armorInventoryIndex = 36 + armorType;
                 if (onlyEmptySlots.get() && !player.getInventory().getStack(armorInventoryIndex).isEmpty()) continue;
-                int source = findArmor(player, armorType);
+                int source = findBestArmor(player, armorType);
                 if (source < 0) continue;
                 equip(client, player, source, 5 + armorType);
                 cooldown = 3;
@@ -43,12 +45,19 @@ public final class ArmorOrganizerAddonModule extends Module {
         }
     }
 
-    private static int findArmor(ClientPlayerEntity player, int armorType) {
+    private static int findBestArmor(ClientPlayerEntity player, int armorType) {
+        int best = -1;
+        int bestScore = -1;
         for (int inventory = 9; inventory < 36; inventory++) {
             ItemStack stack = player.getInventory().getStack(inventory);
-            if (!stack.isEmpty() && armorType(stack) == armorType) return inventory;
+            if (stack.isEmpty() || armorType(stack) != armorType) continue;
+            int score = stack.isDamageable() ? stack.getMaxDamage() - stack.getDamage() : 1;
+            if (score > bestScore) {
+                best = inventory;
+                bestScore = score;
+            }
         }
-        return -1;
+        return best;
     }
 
     private static void equip(MinecraftClient client, ClientPlayerEntity player,

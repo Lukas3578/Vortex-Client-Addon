@@ -22,7 +22,7 @@ public final class AutoToolAddonModule extends Module {
     private int previousSlot = -1;
 
     public AutoToolAddonModule() {
-        super("Auto Tool", Category.CHEATS);
+        super("Vortex + | Auto Tool", Category.HUD);
         addSetting(onlyWhileKeyHeld);
         addSetting(switchBack);
         ClientTickEvents.END_CLIENT_TICK.register(this::onTick);

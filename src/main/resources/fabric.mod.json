@@ -3,7 +3,7 @@
   "id": "vortex_plus_addon",
   "version": "${version}",
   "name": "Vortex Plus Addon",
-  "description": "Extra combat modules for Vortex Client: Kill Aura, Crystal Aura, Fast Anchor, Fast Use, Chest Stealer, Auto Tool and Spawner Safer. They appear in the client's own menu under Cheats.",
+  "description": "Vortex+ add-on modules, Armor Organizer, Inventory Tweak and local session/network HUD features. Modules use the existing HUD category because the main client is not modified.",
   "authors": [
     "Vortex Plus"
   ],

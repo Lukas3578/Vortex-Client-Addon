@@ -75,7 +75,7 @@ public final class CrystalAuraAddonModule extends Module {
     private int pendingTicks;
 
     public CrystalAuraAddonModule() {
-        super("Crystal Aura", Category.CHEATS);
+        super("Vortex + | Crystal Aura", Category.HUD);
         addSetting(targetRange);
         addSetting(placeRange);
         addSetting(breakRange);

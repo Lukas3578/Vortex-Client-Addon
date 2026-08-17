@@ -37,14 +37,12 @@ public final class VortexPlusAddon implements ClientModInitializer {
                 "Removes the client-side pause between throws. Does not affect eating. High ban risk.");
         register(new SpawnerSaferAddonModule(),
                 "Spots an approaching player, packs up every spawner nearby and logs out.");
-        register(new InventorySorterAddonModule(),
-                "Sorts the player's own inventory while the inventory screen is open; never touches containers or the hotbar.");
-        register(new HotbarRefillAddonModule(),
-                "Refills compatible hotbar stacks from the player's own inventory through normal inventory clicks.");
-        register(new InventoryCompactorAddonModule(),
-                "Combines compatible partial stacks in the player's own inventory through normal clicks.");
         register(new ArmorOrganizerAddonModule(),
-                "Equips armor into empty armor slots from the player's own inventory.");
+                "Equips the best available armor from the player's own inventory, even without opening the inventory screen.");
+        register(new InventoryTweakAddonModule(),
+                "Uses the normal Minecraft quick-move action when sneaking over an inventory slot.");
+        register(new VortexPlusHudModule(),
+                "Add-on HUD with local session statistics, ping, server marker and PvP notifications.");
     }
 
     /**

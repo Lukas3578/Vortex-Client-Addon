@@ -1,9 +1,7 @@
 # Vortex Plus
 
 An addon for [Vortex Client](https://github.com/Marcinator31/Vortex-Client)
-that adds the existing combat modules plus a separate inventory quality-of-life module. They appear in the client's own menu under
-**Cheats**, with their own settings, key bindings and presets — the same as the
-built-in ones. The existing modules are left unchanged.
+that adds the existing combat modules plus Armor Organizer, Inventory Tweak and an add-on-owned Vortex+ HUD. Because the main client is not modified, the add-on modules use the client's existing **HUD** category and the visible name prefix **Vortex +**.
 
 ---
 
@@ -18,10 +16,9 @@ built-in ones. The existing modules are left unchanged.
 | **Chest Stealer** | Empties an open container in a single tick |
 | **Auto Tool** | Switches to the best tool for the block you are breaking |
 | **Spawner Safer** | Collects spawners nearby and waits when a player hits you |
-| **Inventory Sorter** | Sorts the player's own 27-slot inventory while the inventory screen is open; it never touches containers or the hotbar |
-| **Hotbar Refill** | Refills compatible hotbar stacks from the player's own inventory using normal inventory clicks |
-| **Inventory Compactor** | Combines compatible partial stacks in the player's own inventory using normal inventory clicks |
-| **Armor Organizer** | Equips armor into empty armor slots from the player's own inventory |
+| **Armor Organizer** | Equips the best available armor from the player's own inventory, even without opening the inventory screen |
+| **Inventory Tweak** | Uses the normal Minecraft quick-move action once while the Sneak/Shift key is held over an item |
+| **Vortex + HUD** | Shows local session time/deaths, server marker, ping and passive event notifications |
 
 ---
 
@@ -33,11 +30,7 @@ forbids them will very likely get you banned. That is not a warning about an
 edge case — it is the normal outcome.
 
 The client on its own only displays information the game has already sent you.
-The four utility modules — Inventory Sorter, Hotbar Refill, Inventory Compactor
-and Armor Organizer — are deliberately limited to the player's own inventory
-and ordinary inventory-screen interactions.
-The existing combat modules remain unchanged, which is why all modules still sit
-under the client's existing Cheats category.
+Armor Organizer and Inventory Tweak use normal client inventory interactions. The Vortex + HUD only reads local client state and already visible chat messages. The existing combat modules remain functionally unchanged; only their displayed category/name is adapted to the read-only main-client API.
 
 ---
 

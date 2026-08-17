@@ -64,7 +64,7 @@ public final class ChestStealerAddonModule extends Module {
     private static final int STUCK_LIMIT = 5;
 
     public ChestStealerAddonModule() {
-        super("Chest Stealer", Category.CHEATS);
+        super("Vortex + | Chest Stealer", Category.HUD);
         addSetting(perTick);
         addSetting(delay);
         addSetting(onlyWhileKeyHeld);
