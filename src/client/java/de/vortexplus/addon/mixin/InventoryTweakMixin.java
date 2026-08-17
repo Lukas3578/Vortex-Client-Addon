@@ -3,6 +3,7 @@ package de.vortexplus.addon.mixin;
 import com.vortex.client.module.ModuleManager;
 import de.vortexplus.addon.InventoryTweakAddonModule;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
@@ -19,15 +20,15 @@ public abstract class InventoryTweakMixin {
     @Shadow protected abstract Slot getSlotAt(double x, double y);
 
     @Inject(method = "mouseClicked", at = @At("HEAD"), cancellable = true)
-    private void vortexplus$quickMove(double mouseX, double mouseY, int button,
+    private void vortexplus$quickMove(Click click, boolean doubled,
                                       CallbackInfoReturnable<Boolean> cir) {
         try {
             MinecraftClient client = MinecraftClient.getInstance();
             InventoryTweakAddonModule module = ModuleManager.INSTANCE.get(InventoryTweakAddonModule.class);
-            if (module == null || !module.isEnabled() || button != 0
+            if (module == null || !module.isEnabled() || click.button() != 0
                     || client.player == null || client.interactionManager == null
                     || !client.options.sneakKey.isPressed()) return;
-            Slot slot = getSlotAt(mouseX, mouseY);
+            Slot slot = getSlotAt(click.x(), click.y());
             if (slot == null || !slot.hasStack()) return;
             ScreenHandler handler = ((HandledScreen<?>)(Object)this).getScreenHandler();
             client.interactionManager.clickSlot(handler.syncId, slot.id, 0,
