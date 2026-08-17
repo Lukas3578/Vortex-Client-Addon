@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.TimeUnit;
 
 /** Streams rendered RGBA frames to a local ffmpeg process and creates MP4 clips. */
 public final class FfmpegReplayRecorder {
@@ -22,6 +23,7 @@ public final class FfmpegReplayRecorder {
     private static int width;
     private static int height;
     private static ByteBuffer pixels;
+    private static long lastFrameAt;
 
     private FfmpegReplayRecorder() {}
 
@@ -53,6 +55,7 @@ public final class FfmpegReplayRecorder {
             input = process.getOutputStream();
             stopAt = System.currentTimeMillis() + seconds * 1000L;
             pixels = BufferUtils.createByteBuffer(width * height * 4);
+            lastFrameAt = 0L;
             return true;
         } catch (IOException | RuntimeException error) {
             process = null;
@@ -68,16 +71,19 @@ public final class FfmpegReplayRecorder {
     public static synchronized void captureFrame() {
         if (!isRecording() || input == null) return;
         try {
-            if (System.currentTimeMillis() >= stopAt) {
+            long now = System.currentTimeMillis();
+            if (now >= stopAt) {
                 stop();
                 return;
             }
+            // Keep capture at the ffmpeg input rate instead of blocking the render thread.
+            if (lastFrameAt != 0L && now - lastFrameAt < 33L) return;
+            lastFrameAt = now;
             pixels.clear();
             GL11.glReadPixels(0, 0, width, height, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, pixels);
             byte[] frame = new byte[pixels.remaining()];
             pixels.get(frame);
             input.write(frame);
-            input.flush();
         } catch (IOException | RuntimeException error) {
             stop();
         }
@@ -89,9 +95,15 @@ public final class FfmpegReplayRecorder {
         }
         input = null;
         if (process != null) {
-            try { process.waitFor(); } catch (InterruptedException interrupted) { Thread.currentThread().interrupt(); }
+            try {
+                if (!process.waitFor(2, TimeUnit.SECONDS)) process.destroyForcibly();
+            } catch (InterruptedException interrupted) {
+                Thread.currentThread().interrupt();
+                process.destroyForcibly();
+            }
         }
         process = null;
         pixels = null;
+        lastFrameAt = 0L;
     }
 }

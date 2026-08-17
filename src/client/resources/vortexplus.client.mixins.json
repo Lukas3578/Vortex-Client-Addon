@@ -8,7 +8,8 @@
 			"InventoryTweakMixin",
 			"LocalFeaturesChatMixin",
 			"GameRendererCaptureMixin",
-			"DynamicCrosshairMixin"
+			"DynamicCrosshairMixin",
+			"ModuleToggleKeyMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
