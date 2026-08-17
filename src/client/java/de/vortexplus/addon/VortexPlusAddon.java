@@ -43,6 +43,8 @@ public final class VortexPlusAddon implements ClientModInitializer {
                 "Moves an item once when hovering over it while Sneak/Shift is held.");
         register(new LocalFeaturesAddonModule(),
                 "Local session tracker, server profiles, PvP notifications, ping alerts and hit sounds.");
+        register(new ManualReplayRecorderAddonModule(),
+                "Starts and stops a real local MP4 recording with the module toggle key.");
     }
 
     /**

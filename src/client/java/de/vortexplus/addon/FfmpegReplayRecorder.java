@@ -25,6 +25,11 @@ public final class FfmpegReplayRecorder {
 
     private FfmpegReplayRecorder() {}
 
+    /** Starts a manual recording that ends only when the module is disabled. */
+    public static synchronized boolean startManual() {
+        return markHighlight("manual", Integer.MAX_VALUE);
+    }
+
     public static synchronized boolean markHighlight(String label, int seconds) {
         try {
             MinecraftClient client = MinecraftClient.getInstance();
