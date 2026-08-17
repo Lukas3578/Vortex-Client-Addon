@@ -103,6 +103,18 @@ public final class SpawnerSaferAddonModule extends Module {
     private int pickupId = -1;
     private int pickupTicks;
 
+    /**
+     * Throttle for the spawner-count scan in makeRoom.
+     *
+     * That scan walks the whole search box (up to ~9800 blocks at range 16)
+     * and used to run every single tick regardless of whether anything could
+     * have changed. It only ever needs to run again after a break attempt or
+     * a throw, so a short cooldown cuts the repeated full-box walk down to
+     * roughly a fifth of the ticks with no change in behaviour.
+     */
+    private int roomCheckCooldown;
+    private static final int ROOM_CHECK_INTERVAL = 4;
+
     public SpawnerSaferAddonModule() {
         super("Spawner Safer", Category.CHEATS);
         addSetting(range);
@@ -130,6 +142,7 @@ public final class SpawnerSaferAddonModule extends Module {
         pickupId = -1;
         pickupTicks = 0;
         lastHealth = -1.0f;
+        roomCheckCooldown = 0;
     }
 
     /**
@@ -191,7 +204,12 @@ public final class SpawnerSaferAddonModule extends Module {
         // one: breaking the last of ten with nine free slots means the tenth
         // lands on the floor.
         if (dropForSpace.get()) {
-            makeRoom(client, player);
+            if (roomCheckCooldown > 0) {
+                roomCheckCooldown--;
+            } else {
+                makeRoom(client, player);
+                roomCheckCooldown = ROOM_CHECK_INTERVAL;
+            }
         }
 
         // Sneak while working, if that is wanted.
@@ -235,13 +253,16 @@ public final class SpawnerSaferAddonModule extends Module {
         if (walkTarget != null) {
             if (!isSpawner(player.getEntityWorld(), walkTarget)) {
                 walkTarget = null;
+                releaseMoveKeys(client);
             } else {
                 double distSq = player.squaredDistanceTo(
                         walkTarget.getX() + 0.5, walkTarget.getY() + 0.5, walkTarget.getZ() + 0.5);
                 if (distSq <= REACH_SQ) {
                     walkTarget = null; // im naechsten Tick brechen
+                    releaseMoveKeys(client);
                 } else if (walkTicks++ > WALK_TIMEOUT) {
                     walkTarget = null; // nicht erreichbar -> naechstes Ziel
+                    releaseMoveKeys(client);
                 } else {
                     moveToward(client, walkTarget.getX() + 0.5, walkTarget.getZ() + 0.5);
                     return;
@@ -255,14 +276,17 @@ public final class SpawnerSaferAddonModule extends Module {
             if (entity instanceof ItemEntity item && item.getStack().isOf(Blocks.SPAWNER.asItem())) {
                 if (player.squaredDistanceTo(entity) <= 1.5 * 1.5) {
                     pickupId = -1; // aufgehoben
+                    releaseMoveKeys(client);
                 } else if (pickupTicks++ > PICKUP_TIMEOUT) {
                     pickupId = -1; // nicht erreichbar -> weiter
+                    releaseMoveKeys(client);
                 } else {
                     moveToward(client, entity.getX(), entity.getZ());
                     return;
                 }
             } else {
                 pickupId = -1; // aufgehoben oder verschwunden
+                releaseMoveKeys(client);
             }
         }
 
@@ -280,6 +304,8 @@ public final class SpawnerSaferAddonModule extends Module {
                 breakTarget = null;
                 attackedTarget = null;
                 client.interactionManager.cancelBlockBreaking();
+                // One fewer spawner standing, so the room check is stale.
+                roomCheckCooldown = 0;
                 return;
             }
 
@@ -492,9 +518,17 @@ public final class SpawnerSaferAddonModule extends Module {
                 // The player's own screen handler numbers its slots differently
                 // from the inventory: the hotbar sits at the end, not the start.
                 int slot = (i < 9) ? (36 + i) : i;
+                // Button 1 on THROW drops a single item, not the stack -- a
+                // slot with five totems stayed occupied for five ticks despite
+                // the docs here promising "a totem stack" gone in one. Button 0
+                // drops the whole stack, freeing the slot in the one click this
+                // method is meant to spend per tick.
                 client.interactionManager.clickSlot(
-                        player.playerScreenHandler.syncId, slot, 1,
+                        player.playerScreenHandler.syncId, slot, 0,
                         net.minecraft.screen.slot.SlotActionType.THROW, player);
+                // A throw just changed the picture, so the next tick should
+                // recheck immediately rather than wait out the throttle.
+                roomCheckCooldown = 0;
                 return;   // one per tick
             }
         } catch (Throwable pvpErr) {

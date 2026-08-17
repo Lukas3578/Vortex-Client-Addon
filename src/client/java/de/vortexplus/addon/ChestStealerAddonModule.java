@@ -52,6 +52,16 @@ public final class ChestStealerAddonModule extends Module {
     public final BooleanSetting stopWhenFull = new BooleanSetting("Stop When Full", true);
 
     private int cooldown;
+    /**
+     * Ticks with items still visible but nothing moved.
+     *
+     * Happens when the inventory fills up mid-batch: QUICK_MOVE silently does
+     * nothing for a slot with nowhere to go, so "moved" stays zero while
+     * "anyLeft" stays true forever -- the module used to sit there clicking
+     * nothing every tick instead of noticing it was stuck.
+     */
+    private int stuckTicks;
+    private static final int STUCK_LIMIT = 5;
 
     public ChestStealerAddonModule() {
         super("Chest Stealer", Category.CHEATS);
@@ -66,6 +76,7 @@ public final class ChestStealerAddonModule extends Module {
     @Override
     protected void onDisable() {
         cooldown = 0;
+        stuckTicks = 0;
     }
 
     private void onTick(MinecraftClient client) {
@@ -109,11 +120,21 @@ public final class ChestStealerAddonModule extends Module {
 
             if (moved > 0) {
                 cooldown = delay.getInt();
+                stuckTicks = 0;
                 // Something was taken, so there may be more next tick.
                 return;
             }
-            if (!anyLeft && closeWhenEmpty.get()) {
-                player.closeHandledScreen();
+            if (!anyLeft) {
+                stuckTicks = 0;
+                if (closeWhenEmpty.get()) player.closeHandledScreen();
+                return;
+            }
+            // Items remain but nothing could be moved this tick -- almost
+            // always a full inventory mid-batch. Give it a few ticks in case
+            // something frees up on its own, then stop clicking uselessly.
+            if (++stuckTicks >= STUCK_LIMIT) {
+                stuckTicks = 0;
+                setEnabled(false);
             }
         } catch (Throwable pvpErr) {
             com.vortex.client.core.Errors.report("ChestStealer", pvpErr);

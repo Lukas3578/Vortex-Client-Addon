@@ -34,6 +34,16 @@ public final class AutoToolAddonModule extends Module {
         previousSlot = -1;
     }
 
+    /**
+     * Minimum speed gain to justify a switch.
+     *
+     * Without this, two items tied at the same mining speed (e.g. both at the
+     * default 1.0 because neither is right for the block) still caused a
+     * pointless slot flip every tick when floating point rounding nudged one
+     * a hair above the other, and the hotbar visibly flickered.
+     */
+    private static final float MIN_GAIN = 0.05f;
+
     private void onTick(MinecraftClient client) {
         if (!isEnabled() || client.player == null || client.world == null) return;
         ClientPlayerEntity player = client.player;
@@ -41,19 +51,24 @@ public final class AutoToolAddonModule extends Module {
                 && client.crosshairTarget instanceof BlockHitResult
                 && ((BlockHitResult) client.crosshairTarget).getType() == HitResult.Type.BLOCK;
 
-        if (onlyWhileKeyHeld.get() && !mining) {
-            restoreSlot(client);
+        if (!mining) {
+            // Switch back whenever mining stops, not only when the setting
+            // requires the key to be held -- otherwise "Switch Back" with
+            // "Only While Key Held" off never actually ran, since this branch
+            // used to be skipped entirely in that combination.
+            if (switchBack.get()) restoreSlot(client);
             return;
         }
-        if (!mining) return;
 
         BlockHitResult hit = (BlockHitResult) client.crosshairTarget;
         BlockPos pos = hit.getBlockPos();
         BlockState state = client.world.getBlockState(pos);
         if (state.isAir()) return;
 
-        int best = player.getInventory().getSelectedSlot();
-        float bestSpeed = player.getInventory().getStack(best).getMiningSpeedMultiplier(state);
+        int current = player.getInventory().getSelectedSlot();
+        float currentSpeed = player.getInventory().getStack(current).getMiningSpeedMultiplier(state);
+        int best = current;
+        float bestSpeed = currentSpeed;
         for (int slot = 0; slot < 9; slot++) {
             ItemStack stack = player.getInventory().getStack(slot);
             if (stack.isEmpty()) continue;
@@ -63,6 +78,11 @@ public final class AutoToolAddonModule extends Module {
                 best = slot;
             }
         }
+        // Only switch when the gain is actually worth it -- otherwise a tie
+        // (or a rounding-level difference) triggers a slot change that helps
+        // nothing and just flickers the hotbar every tick.
+        if (best == current || bestSpeed - currentSpeed < MIN_GAIN) return;
+
         // Through Slots, so the server learns about the change too. Set only
         // locally, the server kept swinging with the old item -- the block then
         // took its full time to break and the module seemed to do nothing.
