@@ -19,9 +19,8 @@ that adds the existing combat modules plus Armor Organizer and Inventory Tweak. 
 | **Armor Organizer** | Equips the best available armor from the player's own inventory, even without opening the inventory screen |
 | **Inventory Tweak** | Moves an item with the normal Minecraft quick-move action when you hover over it while holding Sneak/Shift; no click is required |
 | **Local PvP Features** | Tracks wins, losses, kills, deaths and playtime locally; monitors ping changes, sends PvP notifications, stores server profiles and supports PvP profiles and hit sounds |
+| **Meteor Utilities Pack** | Ten presets: Auto Reconnect, Smart Auto Tool, Auto Totem, Dynamic Crosshair, Entity ESP, Fullbright, No Fall, No Fog, Session Stats, Toggle Sprint and Zoom |
 | **Dynamic Crosshair** | Changes the crosshair gap with sprinting, attack cooldown and item use |
-| **Replay Highlights** | Starts a real local FFmpeg recording on detected kill, win or PvP-event messages and writes MP4 files |
-| **Manual Replay Recorder** | Uses the module's configurable toggle key to start recording and the same key to stop and finalize a real MP4 file |
 
 ---
 
@@ -43,9 +42,6 @@ Armor Organizer and Inventory Tweak use normal client inventory interactions. Th
   uses, and the addon will not load
 - Minecraft **1.21.11**, Fabric Loader **0.18.1** or newer, Fabric API
 - Java **21**
-- `ffmpeg` in the system PATH for real MP4 Replay Highlights; clips are written to `.minecraft/vortex-plus/replays/`
-
-To record manually, open the Vortex menu, find **Manual Replay Recorder** under **Misc**, set its **Toggle Key**, then press that key once to start and again to stop. The file is finalized as an MP4 when recording stops.
 
 Install both jars in your mods folder. The client's mark turns red once the
 addon is present, so you can see which of the two you are running.

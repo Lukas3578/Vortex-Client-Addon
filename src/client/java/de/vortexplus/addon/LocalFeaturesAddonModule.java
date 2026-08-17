@@ -24,7 +24,6 @@ public final class LocalFeaturesAddonModule extends Module {
     public final BooleanSetting notifications = new BooleanSetting("PvP Notifications", true);
     public final BooleanSetting hitSounds = new BooleanSetting("Hit Sounds", true);
     public final BooleanSetting perServerSettings = new BooleanSetting("Per-Server Settings", true);
-    public final BooleanSetting replayHighlights = new BooleanSetting("Replay Highlights", true);
     public final BooleanSetting dynamicCrosshair = new BooleanSetting("Dynamic Crosshair", true);
     public final BooleanSetting automaticPerformance = new BooleanSetting("Automatic Performance Profiles", true);
     public final ModeSetting pvpProfile = new ModeSetting("PvP Profile", 0,
@@ -32,7 +31,6 @@ public final class LocalFeaturesAddonModule extends Module {
     public final NumberSetting soundVolume = new NumberSetting("Sound Volume", 1.0, 0.0, 2.0, 0.05);
     public final NumberSetting soundPitch = new NumberSetting("Sound Pitch", 1.0, 0.5, 2.0, 0.05);
     public final NumberSetting pingAlert = new NumberSetting("Ping Alert (ms)", 120, 0, 1000, 10);
-    public final NumberSetting clipSeconds = new NumberSetting("Highlight Seconds", 8, 2, 30, 1);
 
     private long sessionStarted;
     private int wins;
@@ -51,14 +49,12 @@ public final class LocalFeaturesAddonModule extends Module {
         addSetting(notifications);
         addSetting(hitSounds);
         addSetting(perServerSettings);
-        addSetting(replayHighlights);
         addSetting(dynamicCrosshair);
         addSetting(automaticPerformance);
         addSetting(pvpProfile);
         addSetting(soundVolume);
         addSetting(soundPitch);
         addSetting(pingAlert);
-        addSetting(clipSeconds);
         ClientTickEvents.END_CLIENT_TICK.register(this::tick);
     }
 
@@ -136,12 +132,10 @@ public final class LocalFeaturesAddonModule extends Module {
         if (text.contains("you killed") || text.contains("killed by you") || text.contains("was slain by")) {
             kills++;
             notify(client, "Kill");
-            markHighlight("kill");
             playHitSound(client);
         } else if (text.contains("victory") || text.contains("winner") || text.contains("you win")) {
             wins++;
             notify(client, "Win");
-            markHighlight("win");
         } else if (text.contains("defeat") || text.contains("you lost") || text.contains("loss")) {
             losses++;
             notify(client, "Loss");
@@ -150,15 +144,9 @@ public final class LocalFeaturesAddonModule extends Module {
             notify(client, "Death");
         } else if (text.contains("combo") || text.contains("clutch") || text.contains("opponent")) {
             notify(client, "PvP event");
-            markHighlight("pvp-event");
         }
     }
 
-    private void markHighlight(String label) {
-        if (replayHighlights.get()) {
-            FfmpegReplayRecorder.markHighlight(label, clipSeconds.getInt());
-        }
-    }
 
     private void playHitSound(MinecraftClient client) {
         if (!hitSounds.get() || client.player == null) return;
