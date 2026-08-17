@@ -54,7 +54,7 @@ public final class FastUseAddonModule extends Module {
     public final BooleanSetting throwablesOnly = new BooleanSetting("Throwables Only", true);
 
     public FastUseAddonModule() {
-        super("Vortex + | Fast Use", Category.HUD);
+        super("Fast Use", Category.CHEATS);
         addSetting(cooldown);
         addSetting(onlyWhileHeld);
         addSetting(throwablesOnly);

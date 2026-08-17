@@ -6,7 +6,9 @@
 			"FocusPauseMixin",
 			"ItemUseCooldownAccessor",
 			"InventoryTweakMixin",
-			"VortexPlusChatMixin"
+			"LocalFeaturesChatMixin",
+			"GameRendererCaptureMixin",
+			"DynamicCrosshairMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

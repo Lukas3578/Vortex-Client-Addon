@@ -116,7 +116,7 @@ public final class SpawnerSaferAddonModule extends Module {
     private static final int ROOM_CHECK_INTERVAL = 4;
 
     public SpawnerSaferAddonModule() {
-        super("Vortex + | Spawner Safer", Category.HUD);
+        super("Spawner Safer", Category.CHEATS);
         addSetting(range);
         addSetting(detectRange);
         addSetting(sneak);

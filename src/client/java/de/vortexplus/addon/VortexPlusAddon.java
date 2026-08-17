@@ -40,9 +40,9 @@ public final class VortexPlusAddon implements ClientModInitializer {
         register(new ArmorOrganizerAddonModule(),
                 "Equips the best available armor from the player's own inventory, even without opening the inventory screen.");
         register(new InventoryTweakAddonModule(),
-                "Uses the normal Minecraft quick-move action when sneaking over an inventory slot.");
-        register(new VortexPlusHudModule(),
-                "Add-on HUD with local session statistics, ping, server marker and PvP notifications.");
+                "Moves an item once when hovering over it while Sneak/Shift is held.");
+        register(new LocalFeaturesAddonModule(),
+                "Local session tracker, server profiles, PvP notifications, ping alerts and hit sounds.");
     }
 
     /**

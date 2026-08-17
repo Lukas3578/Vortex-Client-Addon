@@ -1,7 +1,7 @@
 # Vortex Plus
 
 An addon for [Vortex Client](https://github.com/Marcinator31/Vortex-Client)
-that adds the existing combat modules plus Armor Organizer, Inventory Tweak and an add-on-owned Vortex+ HUD. Because the main client is not modified, the add-on modules use the client's existing **HUD** category and the visible name prefix **Vortex +**.
+that adds the existing combat modules plus Armor Organizer and Inventory Tweak. The modules are sorted into the client's standard **Cheats** and **Misc** categories.
 
 ---
 
@@ -17,8 +17,10 @@ that adds the existing combat modules plus Armor Organizer, Inventory Tweak and 
 | **Auto Tool** | Switches to the best tool for the block you are breaking |
 | **Spawner Safer** | Collects spawners nearby and waits when a player hits you |
 | **Armor Organizer** | Equips the best available armor from the player's own inventory, even without opening the inventory screen |
-| **Inventory Tweak** | Uses the normal Minecraft quick-move action once while the Sneak/Shift key is held over an item |
-| **Vortex + HUD** | Shows local session time/deaths, server marker, ping and passive event notifications |
+| **Inventory Tweak** | Moves an item with the normal Minecraft quick-move action when you hover over it while holding Sneak/Shift; no click is required |
+| **Local PvP Features** | Tracks wins, losses, kills, deaths and playtime locally; monitors ping changes, sends PvP notifications, stores server profiles and supports PvP profiles and hit sounds |
+| **Dynamic Crosshair** | Changes the crosshair gap with sprinting, attack cooldown and item use |
+| **Replay Highlights** | Starts a real local FFmpeg recording on detected kill, win or PvP-event messages and writes MP4 files |
 
 ---
 
@@ -30,7 +32,7 @@ forbids them will very likely get you banned. That is not a warning about an
 edge case — it is the normal outcome.
 
 The client on its own only displays information the game has already sent you.
-Armor Organizer and Inventory Tweak use normal client inventory interactions. The Vortex + HUD only reads local client state and already visible chat messages. The existing combat modules remain functionally unchanged; only their displayed category/name is adapted to the read-only main-client API.
+Armor Organizer and Inventory Tweak use normal client inventory interactions. The existing combat modules remain functionally unchanged and are shown in the standard Cheats category.
 
 ---
 
@@ -40,6 +42,7 @@ Armor Organizer and Inventory Tweak use normal client inventory interactions. Th
   uses, and the addon will not load
 - Minecraft **1.21.11**, Fabric Loader **0.18.1** or newer, Fabric API
 - Java **21**
+- `ffmpeg` in the system PATH for real MP4 Replay Highlights; clips are written to `.minecraft/vortex-plus/replays/`
 
 Install both jars in your mods folder. The client's mark turns red once the
 addon is present, so you can see which of the two you are running.

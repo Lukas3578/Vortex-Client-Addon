@@ -48,7 +48,7 @@ public final class KillAuraAddonModule extends Module {
     private Entity target;
 
     public KillAuraAddonModule() {
-        super("Vortex + | Kill Aura", Category.HUD);
+        super("Kill Aura", Category.CHEATS);
         addSetting(range);
         addSetting(rotate);
         addSetting(onlyWhileKeyHeld);

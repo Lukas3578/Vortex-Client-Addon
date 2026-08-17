@@ -3,7 +3,7 @@
   "id": "vortex_plus_addon",
   "version": "${version}",
   "name": "Vortex Plus Addon",
-  "description": "Vortex+ add-on modules, Armor Organizer, Inventory Tweak and local session/network HUD features. Modules use the existing HUD category because the main client is not modified.",
+  "description": "Vortex add-on combat modules plus Armor Organizer and fast hover-based Inventory Tweak.",
   "authors": [
     "Vortex Plus"
   ],

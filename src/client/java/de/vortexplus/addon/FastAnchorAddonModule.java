@@ -53,7 +53,7 @@ public final class FastAnchorAddonModule extends Module {
     private BlockHitResult pendingHit;
 
     public FastAnchorAddonModule() {
-        super("Vortex + | Fast Anchor", Category.HUD);
+        super("Fast Anchor", Category.CHEATS);
         addSetting(delay);
         addSetting(switchDelay);
         addSetting(switchBack);

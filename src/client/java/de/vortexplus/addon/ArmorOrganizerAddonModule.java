@@ -15,7 +15,7 @@ public final class ArmorOrganizerAddonModule extends Module {
     private int cooldown;
 
     public ArmorOrganizerAddonModule() {
-        super("Vortex + | Armor Organizer", Category.HUD);
+        super("Armor Organizer", Category.MISC);
         addSetting(onlyEmptySlots);
         ClientTickEvents.END_CLIENT_TICK.register(this::onTick);
     }
