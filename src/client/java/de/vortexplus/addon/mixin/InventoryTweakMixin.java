@@ -3,6 +3,7 @@ package de.vortexplus.addon.mixin;
 import com.vortex.client.module.ModuleManager;
 import de.vortexplus.addon.InventoryTweakAddonModule;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
@@ -22,8 +23,9 @@ public abstract class InventoryTweakMixin {
     private int vortexplus$lastSyncId = -1;
     private long vortexplus$lastMoveAt;
 
-    @Inject(method = "mouseMoved", at = @At("HEAD"))
-    private void vortexplus$moveOnHover(double mouseX, double mouseY, CallbackInfo ci) {
+    @Inject(method = "renderMain", at = @At("HEAD"))
+    private void vortexplus$moveOnHover(DrawContext context, int mouseX, int mouseY,
+                                         float delta, CallbackInfo ci) {
         try {
             MinecraftClient client = MinecraftClient.getInstance();
             InventoryTweakAddonModule module = ModuleManager.INSTANCE.get(InventoryTweakAddonModule.class);
