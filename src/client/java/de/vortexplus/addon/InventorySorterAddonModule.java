@@ -137,4 +137,3 @@ public final class InventorySorterAddonModule extends Module {
     }
 }
 
-So wird nur der eigene Inventarbereich (27 Slots) sortiert; Hotbar und Container bleiben unangetastet.
