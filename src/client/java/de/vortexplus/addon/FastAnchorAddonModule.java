@@ -26,6 +26,8 @@ public final class FastAnchorAddonModule extends Module {
     public final NumberSetting delay = new NumberSetting("Delay", 1, 0, 6, 1);
     public final NumberSetting switchDelay = new NumberSetting("Switch Delay", 3, 0, 10, 1);
     public final BooleanSetting switchBack = new BooleanSetting("Switch Back", true);
+    public final BooleanSetting pauseOnUse = new BooleanSetting("Pause While Using Item", true);
+    public final BooleanSetting pauseOnScreen = new BooleanSetting("Pause In Screens", true);
 
     /**
      * Refuse anchors that would catch you as well.
@@ -57,6 +59,8 @@ public final class FastAnchorAddonModule extends Module {
         addSetting(delay);
         addSetting(switchDelay);
         addSetting(switchBack);
+        addSetting(pauseOnUse);
+        addSetting(pauseOnScreen);
         addSetting(selfProtect);
         addSetting(minSelfDistance);
         ClientTickEvents.END_CLIENT_TICK.register(this::onTick);
@@ -70,6 +74,11 @@ public final class FastAnchorAddonModule extends Module {
     private void onTick(MinecraftClient client) {
         if (!isEnabled() || client.player == null || client.world == null
                 || client.interactionManager == null) return;
+        if ((pauseOnUse.get() && client.player.isUsingItem())
+                || (pauseOnScreen.get() && client.currentScreen != null)) {
+            reset(client);
+            return;
+        }
         if (!client.options.useKey.isPressed()) {
             reset(client);
             return;
