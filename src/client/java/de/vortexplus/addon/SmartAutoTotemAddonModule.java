@@ -12,6 +12,9 @@ public final class SmartAutoTotemAddonModule extends Module {
         super("Smart Auto Totem", Category.CHEATS);
         delegate = ModuleManager.INSTANCE.get(AutoTotemModule.class);
         if (delegate != null) {
+            // Keep the client implementation available as a delegate, but expose
+            // only this addon's named entry in the module menu.
+            ModuleManager.INSTANCE.getModules().remove(delegate);
             addSetting(delegate.delay);
             addSetting(delegate.jitter);
             addSetting(delegate.onlyWithWeapon);
