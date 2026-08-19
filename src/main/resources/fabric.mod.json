@@ -5,7 +5,7 @@
   "name": "Vortex Plus Addon",
   "description": "Vortex add-on combat modules plus Armor Organizer and fast hover-based Inventory Tweak.",
   "authors": [
-    "Vortex Plus"
+    "Vortex Studio"
   ],
   "license": "MIT",
   "environment": "client",
