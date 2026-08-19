@@ -43,8 +43,8 @@ public final class VortexPlusAddon implements ClientModInitializer {
                 "Moves an item once when hovering over it while Sneak/Shift is held.");
         register(new LocalFeaturesAddonModule(),
                 "Local session tracker, server profiles, PvP notifications, ping alerts and hit sounds.");
-        register(new MeteorUtilitiesAddonModule(),
-                "Ten Meteor-inspired utility presets wired to Vortex modules: Auto Reconnect, Smart Auto Tool, Auto Totem, Dynamic Crosshair, Entity ESP, Fullbright, No Fall, No Fog, Session Stats, Toggle Sprint and Zoom.");
+        register(new SmartAutoTotemAddonModule(),
+                "Keeps a totem ready in your off hand using the configured Auto Totem settings.");
     }
 
     /**
