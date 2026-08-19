@@ -4,7 +4,6 @@ import com.vortex.client.core.setting.BooleanSetting;
 import com.vortex.client.module.Module;
 import com.vortex.client.module.ModuleManager;
 import com.vortex.client.module.modules.AutoReconnectModule;
-import com.vortex.client.module.modules.AutoToolModule;
 import com.vortex.client.module.modules.AutoTotemModule;
 import com.vortex.client.module.modules.CrosshairModule;
 import com.vortex.client.module.modules.EspModule;
@@ -16,7 +15,7 @@ import com.vortex.client.module.modules.ToggleSprintModule;
 import com.vortex.client.module.modules.ZoomModule;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 
-/** Ten Meteor-inspired presets wired to modules already provided by Vortex. */
+/** Meteor-inspired presets wired to Vortex modules and this addon's Auto Tool. */
 public final class MeteorUtilitiesAddonModule extends Module {
     public final BooleanSetting autoReconnect = new BooleanSetting("Auto Reconnect", false);
     public final BooleanSetting autoTool = new BooleanSetting("Smart Auto Tool", false);
@@ -55,7 +54,7 @@ public final class MeteorUtilitiesAddonModule extends Module {
 
     private void sync() {
         lastAutoReconnect = apply(autoReconnect, lastAutoReconnect, AutoReconnectModule.class);
-        lastAutoTool = apply(autoTool, lastAutoTool, AutoToolModule.class);
+        lastAutoTool = apply(autoTool, lastAutoTool, AutoToolAddonModule.class);
         lastAutoTotem = apply(autoTotem, lastAutoTotem, AutoTotemModule.class);
         lastDynamicCrosshair = apply(dynamicCrosshair, lastDynamicCrosshair, CrosshairModule.class);
         lastEntityEsp = apply(entityEsp, lastEntityEsp, EspModule.class);
