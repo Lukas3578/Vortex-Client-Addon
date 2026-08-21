@@ -51,7 +51,7 @@ public abstract class FixedCapeRendererMixin {
         public void render(MatrixStack matrices, OrderedRenderCommandQueue queue, int light,
                            PlayerEntityRenderState state, float limbAngle, float limbDistance) {
             Identifier texture = CapePresence.textureFor(state.id);
-            if (texture == null && WearableCosmetics.isOwnPlayer(state)) texture = ActiveCape.textureId();
+            if (texture == null && WearableCosmetics.isOwnPlayer(state)) texture = CapePresence.localTexture();
             if (texture == null || state.invisible) return;
             model.setAngles(state);
             matrices.push();
