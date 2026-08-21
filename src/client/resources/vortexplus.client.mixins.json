@@ -8,7 +8,10 @@
 			"InventoryTweakMixin",
 			"LocalFeaturesChatMixin",
 			"DynamicCrosshairMixin",
-			"ModuleToggleKeyMixin"
+			"ModuleToggleKeyMixin",
+			"FixedCapeRendererMixin",
+			"FeatureListAccessMixin",
+			"DisableFlatCapeRendererMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
