@@ -14,6 +14,7 @@ import net.minecraft.client.render.RenderLayers;
 import net.minecraft.client.render.command.OrderedRenderCommandQueue;
 import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRendererContext;
+import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.render.entity.state.PlayerEntityRenderState;
 import net.minecraft.client.util.math.MatrixStack;
@@ -29,7 +30,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(targets = "net.minecraft.client.render.entity.PlayerEntityRenderer")
 public abstract class FixedCapeRendererMixin {
     @Inject(method = "<init>", at = @At("TAIL"))
-    private void vortexplus$addFixedCape(Object context, boolean slim, CallbackInfo ci) {
+    private void vortexplus$addFixedCape(EntityRendererFactory.Context context, boolean slim, CallbackInfo ci) {
         @SuppressWarnings("unchecked")
         FeatureRendererContext<PlayerEntityRenderState, PlayerEntityModel> renderer =
                 (FeatureRendererContext<PlayerEntityRenderState, PlayerEntityModel>) (Object) this;
