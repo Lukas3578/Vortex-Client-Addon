@@ -23,6 +23,7 @@ public final class VortexPlusAddon implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+        CapePresence.init();
         register(new KillAuraAddonModule(),
                 "Attacks whatever you are looking at, within range. Very high ban risk.");
         register(new CrystalAuraAddonModule(),

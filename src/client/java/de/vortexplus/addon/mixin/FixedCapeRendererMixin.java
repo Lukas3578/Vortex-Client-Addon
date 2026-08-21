@@ -2,6 +2,7 @@ package de.vortexplus.addon.mixin;
 
 import com.vortex.client.cosmetics.ActiveCape;
 import com.vortex.client.cosmetics.WearableCosmetics;
+import de.vortexplus.addon.CapePresence;
 import net.minecraft.client.model.Dilation;
 import net.minecraft.client.model.ModelData;
 import net.minecraft.client.model.ModelPart;
@@ -49,8 +50,9 @@ public abstract class FixedCapeRendererMixin {
         @Override
         public void render(MatrixStack matrices, OrderedRenderCommandQueue queue, int light,
                            PlayerEntityRenderState state, float limbAngle, float limbDistance) {
-            Identifier texture = ActiveCape.textureId();
-            if (texture == null || state.invisible || !WearableCosmetics.isOwnPlayer(state)) return;
+            Identifier texture = CapePresence.textureFor(state.id);
+            if (texture == null && WearableCosmetics.isOwnPlayer(state)) texture = ActiveCape.textureId();
+            if (texture == null || state.invisible) return;
             model.setAngles(state);
             matrices.push();
             queue.submitModel(model, state, matrices, RenderLayers.entitySolid(texture), light,
