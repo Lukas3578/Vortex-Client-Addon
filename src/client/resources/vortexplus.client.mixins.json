@@ -10,8 +10,10 @@
 			"DynamicCrosshairMixin",
 			"ModuleToggleKeyMixin",
 			"FixedCapeRendererMixin",
+			"FixedHatRendererMixin",
 			"FeatureListAccessMixin",
-			"DisableFlatCapeRendererMixin"
+			"DisableFlatCapeRendererMixin",
+			"DisableCoreHatRendererMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
