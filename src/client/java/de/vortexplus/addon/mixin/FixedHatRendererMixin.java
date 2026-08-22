@@ -1,6 +1,6 @@
 package de.vortexplus.addon.mixin;
 
-import com.vortex.client.cosmetics.WearableCosmetics;
+import de.vortexplus.addon.LocalCosmeticsSelection;
 import net.minecraft.client.model.Dilation;
 import net.minecraft.client.model.ModelData;
 import net.minecraft.client.model.ModelPart;
@@ -63,8 +63,8 @@ public abstract class FixedHatRendererMixin {
         @Override
         public void render(MatrixStack matrices, OrderedRenderCommandQueue queue, int light,
                            PlayerEntityRenderState state, float limbAngle, float limbDistance) {
-            if (state.invisible || !WearableCosmetics.isOwnPlayer(state)) return;
-            String selected = WearableCosmetics.activeHat();
+            if (state.invisible || !LocalCosmeticsSelection.isLocalPlayer(state)) return;
+            String selected = LocalCosmeticsSelection.activeHat();
             PremiumHatModel model = MODELS.get(selected);
             Identifier texture = TEXTURES.get(selected);
             if (model == null || texture == null) return;
