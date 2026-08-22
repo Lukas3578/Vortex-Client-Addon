@@ -13,7 +13,8 @@
 			"FixedHatRendererMixin",
 			"FeatureListAccessMixin",
 			"DisableFlatCapeRendererMixin",
-			"DisableCoreHatRendererMixin"
+			"DisableCoreHatRendererMixin",
+			"SandboxTitleScreenMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
