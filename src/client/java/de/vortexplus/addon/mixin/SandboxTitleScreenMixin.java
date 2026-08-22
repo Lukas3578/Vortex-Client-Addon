@@ -8,7 +8,6 @@ import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -23,15 +22,13 @@ public abstract class SandboxTitleScreenMixin {
     private static final int VORTEX_PANEL = 0xB30A1222;
     private static final int VORTEX_PANEL_EDGE = 0xA83B7CC7;
 
-    @Shadow protected int width;
-    @Shadow protected int height;
-
     @Inject(method = "init", at = @At("TAIL"))
     private void vortexplus$layoutSandboxActions(CallbackInfo ci) {
         try {
-            int x = width / 2 - 160;
-            int y = height / 2 - 58;
-            for (Element child : ((Screen) (Object) this).children()) {
+            Screen screen = (Screen) (Object) this;
+            int x = screen.width / 2 - 160;
+            int y = screen.height / 2 - 58;
+            for (Element child : screen.children()) {
                 if (!(child instanceof ClickableWidget button)) continue;
                 String label = button.getMessage().getString();
                 if ("Singleplayer".equals(label)) {
@@ -50,8 +47,9 @@ public abstract class SandboxTitleScreenMixin {
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/Screen;render(Lnet/minecraft/client/gui/DrawContext;IIF)V", shift = At.Shift.BEFORE))
     private void vortexplus$drawSandboxFrame(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         try {
-            int left = width / 2 - 172;
-            int top = height / 2 - 88;
+            Screen screen = (Screen) (Object) this;
+            int left = screen.width / 2 - 172;
+            int top = screen.height / 2 - 88;
             int right = left + 344;
             int bottom = top + 180;
 
